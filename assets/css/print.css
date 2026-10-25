@@ -1,0 +1,16 @@
+/* Impresión del informe de verificación y del requerimiento */
+@media print {
+  @page { margin: 16mm; }
+  body { background: #fff; font-size: 11pt; }
+  .barra-prototipo, .encabezado, .lateral, .pie, .acciones, .pestanas, .no-imprimir, .toasts, .filtros { display: none !important; }
+  .consola { display: block; }
+  .contenido { padding: 0; }
+  .tarjeta { box-shadow: none; border: 1px solid #999; break-inside: avoid; }
+  .solo-imprimir { display: block !important; }
+  a { color: inherit; text-decoration: none; }
+  .modal-fondo { position: static; background: none; padding: 0; display: block; }
+  .modal { box-shadow: none; width: 100%; max-height: none; }
+  .modal-cab .cerrar, .modal-pie { display: none; }
+  body.imprimiendo-modal #app { display: none; }
+}
+.solo-imprimir { display: none; }

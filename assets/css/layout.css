@@ -1,0 +1,128 @@
+/* Barra superior: aviso permanente de prototipo (ocupa el lugar de la barra GOV.CO) */
+.barra-prototipo {
+  background: var(--gov-azul);
+  color: #fff;
+  font-size: var(--fs-xs);
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.barra-prototipo strong { letter-spacing: 0.04em; }
+.barra-prototipo button {
+  background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.6);
+  border-radius: var(--r-sm); font: inherit; padding: 2px 10px; cursor: pointer;
+}
+.barra-prototipo button:hover { background: rgba(255,255,255,0.15); }
+
+/* Encabezado institucional */
+.encabezado {
+  background: var(--esap-navy);
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.encabezado .logo { height: 46px; width: auto; display: block; }
+.encabezado .sistema {
+  border-left: 1px solid rgba(255,255,255,0.35);
+  padding-left: 1.25rem;
+  line-height: 1.2;
+}
+.encabezado .sistema b { display: block; font-size: 1.15rem; letter-spacing: 0.02em; }
+.encabezado .sistema span { font-size: var(--fs-xs); opacity: 0.85; }
+.encabezado .usuario {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: var(--fs-sm);
+}
+.encabezado .usuario .avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.18); display: grid; place-items: center; font-weight: 600;
+}
+.encabezado .usuario .rol { display: block; font-size: var(--fs-xs); opacity: 0.8; }
+.encabezado .usuario b { white-space: nowrap; }
+.encabezado select {
+  max-width: 200px;
+  font: inherit; font-size: var(--fs-xs); padding: 4px 6px; border-radius: var(--r-sm);
+  border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.1); color: #fff;
+}
+.encabezado select option { color: var(--texto); }
+.encabezado .btn-salir {
+  background: transparent; border: 1px solid rgba(255,255,255,0.5); color: #fff;
+  border-radius: var(--r-sm); padding: 5px 12px; cursor: pointer; font: inherit; font-size: var(--fs-xs);
+}
+
+/* Consola ESAP: lateral + contenido */
+.consola { display: grid; grid-template-columns: var(--ancho-lateral) 1fr; min-height: calc(100vh - 100px); }
+.lateral {
+  background: var(--superficie);
+  border-right: 1px solid var(--borde);
+  padding: 1rem 0.75rem;
+}
+.lateral .titulo-nav {
+  font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--texto-tenue); padding: 0.5rem 0.75rem; margin-top: 0.5rem;
+}
+.lateral a {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.55rem 0.75rem; border-radius: var(--r);
+  color: var(--texto); text-decoration: none; font-size: var(--fs-sm);
+}
+.lateral a .n {
+  width: 22px; height: 22px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: var(--fs-xs); font-weight: 600;
+  background: var(--esap-azul-claro); color: var(--esap-azul);
+}
+.lateral a:hover { background: var(--superficie-2); }
+.lateral a.activo { background: var(--esap-azul-claro); color: var(--esap-navy); font-weight: 600; }
+.lateral a.activo .n { background: var(--esap-azul); color: #fff; }
+.lateral .contador {
+  margin-left: auto; background: var(--error); color: #fff; border-radius: 10px;
+  font-size: 0.68rem; padding: 0 6px; font-weight: 600;
+}
+
+.contenido { padding: 1.5rem 1.75rem 3rem; min-width: 0; }
+.cabecera-vista { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.cabecera-vista .migas { font-size: var(--fs-xs); color: var(--texto-suave); margin-bottom: 0.25rem; }
+.cabecera-vista .migas a { color: var(--texto-suave); }
+.cabecera-vista h1 { margin-bottom: 0.25rem; }
+.cabecera-vista p { margin: 0; color: var(--texto-suave); max-width: 760px; }
+
+/* Portal de la entidad */
+.portal { max-width: 1040px; margin: 0 auto; padding: 1.5rem 16px 3rem; }
+
+/* Pie */
+.pie {
+  background: var(--esap-navy); color: rgba(255,255,255,0.85);
+  font-size: var(--fs-xs); padding: 1rem 20px; text-align: center;
+}
+
+/* Rejillas */
+.grid { display: grid; gap: 1rem; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.span-2 { grid-column: span 2; }
+
+@media (max-width: 1100px) {
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .consola { grid-template-columns: 1fr; }
+  .lateral {
+    border-right: 0; border-bottom: 1px solid var(--borde);
+    display: flex; overflow-x: auto; gap: 0.25rem; padding: 0.5rem;
+  }
+  .lateral .titulo-nav { display: none; }
+  .lateral a { white-space: nowrap; }
+  .contenido { padding: 1rem 16px 2rem; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .span-2 { grid-column: auto; }
+  .encabezado .sistema { border-left: 0; padding-left: 0; }
+  .encabezado .usuario { margin-left: 0; width: 100%; flex-wrap: wrap; }
+}

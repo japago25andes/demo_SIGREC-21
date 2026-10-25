@@ -1,0 +1,46 @@
+/* Tokens de diseño — línea gráfica tomada de www.esap.edu.co (Montserrat, azules institucionales) */
+:root {
+  /* Marca ESAP */
+  --esap-navy: #144a8a;        /* encabezado del portal */
+  --esap-azul: #0c4da2;        /* botones primarios */
+  --esap-azul-oscuro: #004884; /* hover / enlaces visitados */
+  --esap-azul-titulo: #0066cd; /* títulos h2 */
+  --esap-azul-claro: #e8f0fb;  /* fondos suaves */
+  --esap-azul-medio: #2d5c88;  /* acentos secundarios */
+  --gov-azul: #3366cc;         /* barra superior estilo GOV.CO */
+
+  /* Neutros */
+  --texto: #333333;
+  --texto-suave: #5f6b7a;
+  --texto-tenue: #8a94a3;
+  --borde: #d9dfe7;
+  --borde-fuerte: #b8c2cf;
+  --fondo: #f4f6f9;
+  --superficie: #ffffff;
+  --superficie-2: #f8fafc;
+
+  /* Estados (indicios, nunca determinaciones) */
+  --ok: #1e7b3e;        --ok-bg: #e6f4ea;
+  --alerta: #9a5b00;    --alerta-bg: #fff4e0;
+  --error: #b42318;     --error-bg: #fdecea;
+  --info: #0c4da2;      --info-bg: #e8f0fb;
+  --neutro: #5f6b7a;    --neutro-bg: #eef1f5;
+  --morado: #6b3fa0;    --morado-bg: #f1eafa;
+
+  /* Tipografía */
+  --fuente: "Montserrat", "Segoe UI", Arial, sans-serif;
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.82rem;
+  --fs-base: 0.92rem;
+  --fs-md: 1.05rem;
+  --fs-lg: 1.3rem;
+  --fs-xl: 1.7rem;
+
+  /* Espaciado y forma */
+  --r-sm: 4px;
+  --r: 6px;
+  --r-lg: 10px;
+  --sombra: 0 1px 2px rgba(16, 38, 70, 0.06), 0 2px 8px rgba(16, 38, 70, 0.06);
+  --sombra-alta: 0 10px 30px rgba(16, 38, 70, 0.18);
+  --ancho-lateral: 264px;
+}
