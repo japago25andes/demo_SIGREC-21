@@ -198,9 +198,11 @@ S21.ui = (function () {
   }
 
   function zonaCarga(id, texto, acepta) {
+    const formatos = acepta.split(",").map((e) => e.replace(".", "").toUpperCase()).join(", ");
     return `<label class="zona-carga" for="${id}" data-zona="${id}">
       <input type="file" id="${id}" accept="${acepta}">
-      <div style="font-size:1.6rem">⬆</div><b>${texto}</b><div class="small muted">Arrastre el archivo aquí o haga clic para seleccionarlo · ${esc(acepta)}</div>
+      <span class="icono-carga" aria-hidden="true">⬆</span><b>${texto}</b>
+      <span class="ayuda-carga small muted">Arrastre el archivo aquí o haga clic para seleccionarlo · ${esc(formatos)}</span>
     </label>`;
   }
   /* Activa arrastrar y soltar sobre las zonas de carga de una vista */

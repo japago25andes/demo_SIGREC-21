@@ -385,31 +385,55 @@
     });
   }
 
+  /* Demostración: sin una nómina válida, la de ejemplo permite que el recorrido continúe en la ESAP */
+  function usarNominaEjemplo(exp) {
+    const n = S21.excel.datosEjemplo(exp);
+    const filas = n.filas.map((f, i) => ({ ...f, _fila: i + 2 }));
+    const validacion = R.validarNomina({ filas, conceptos: n.conceptos }, exp);
+    const version = (exp.nomina?.version || 0) + 1;
+    const archivo = `nomina_ejemplo_${exp.id}.xlsx`;
+    const loteId = `LOT-${exp.id.slice(-4)}-NOM-${version}`;
+    exp.nomina = { archivo, cargado: U.ahora(), version, filas: filas.length, resumen: R.resumirNomina(filas, n.conceptos), validacion: { ...validacion, fecha: U.ahora() } };
+    st.db.lotes.push({ id: loteId, expedienteId: exp.id, origen: "ENTIDAD", tipo: "NOMINA", nombre: archivo, tamano: 40000 + filas.length * 62,
+      huella: `demo-${exp.id}-${version}`, fecha: U.ahora(), cargadoPor: S21.auth.actor().nombre, version, estado: "VALIDADO", filas: filas.length, corte: exp.periodos[exp.periodos.length - 1] });
+    st.bitacora(exp.id, `Nómina de ejemplo incorporada (versión ${version})`, "Modo demostración: se radicó sin una nómina válida y se usó la nómina de ejemplo con datos ficticios.", "entidad", loteId);
+  }
+
   /* Paso 5: radicación */
   function pasoRadicar(el, exp, ent, av) {
-    const listo = av.registro && av.nomina && av.soportes;
+    const completo = av.registro && av.nomina && av.soportes;
     const item = (ok, txt, href) => `<li class="mb-1">${ok ? ui.chip("Listo", "ok") : ui.chip("Pendiente", "alerta")} ${txt} ${ok ? "" : `<a href="${href}" class="small">Completar</a>`}</li>`;
     el.innerHTML = `
       <div class="tarjeta">
         <h3>Verificación antes de radicar</h3>
+        ${completo ? "" : `<div class="aviso"><p><b>Modo demostración:</b> puede radicar aunque falte información.
+          ${av.nomina ? "" : "Si no hay una nómina válida, se usará la nómina de ejemplo para que el recorrido continúe."}
+          Lo demás que falte quedará como alerta para la ESAP.</p></div>`}
         <ul style="list-style:none;padding:0">
           ${item(av.registro, "Datos del representante legal y del responsable de la información.", "#/entidad/registro")}
           ${item(av.nomina, `Nómina de los ${exp.periodos.length} periodos, sin errores y con todos los conceptos clasificados.`, "#/entidad/nomina")}
           ${item(av.soportes, "PILA, comprobantes de pago y certificación de factores salariales.", "#/entidad/soportes")}
         </ul>
-        <label class="flex gap-1 items-center small mb-2"><input type="checkbox" id="declara" ${listo ? "" : "disabled"}>
+        <label class="flex gap-1 items-center small mb-2"><input type="checkbox" id="declara" checked>
           Declaro que la información cargada es veraz, corresponde a la nómina de la entidad y que la clasificación de factores salariales es la aplicada en la liquidación.</label>
         <div class="acciones"><a class="btn btn-sec" href="#/entidad/soportes">Volver</a>
-          <button class="btn btn-grande" data-accion="radicar" ${listo ? "" : "disabled"}>Radicar información</button></div>
+          <button class="btn btn-grande" data-accion="radicar">Radicar información</button></div>
       </div>`;
     ui.on(el, {
       radicar() {
-        if (!el.querySelector("#declara").checked) { ui.toast("Debe aceptar la declaración para radicar.", "error"); return; }
+        const declara = el.querySelector("#declara").checked;
+        if (!av.nomina) usarNominaEjemplo(exp);
         exp.radicado = { fecha: U.ahora(), numero: `RAD-E-2026-${exp.id.slice(-4)}${exp.reprocesos ? "-" + (exp.reprocesos + 1) : ""}` };
         exp.estado = "RECIBIDO";
         exp.devolucion = null;
-        st.bitacora(exp.id, "Información radicada por la entidad", `Radicado ${exp.radicado.numero}. Declaración de veracidad aceptada.`, "entidad");
+        st.bitacora(exp.id, "Información radicada por la entidad", `Radicado ${exp.radicado.numero}.${declara ? " Declaración de veracidad aceptada." : ""}`, "entidad");
         st.crearAlerta({ tipo: "LISTO_VALIDACION", expedienteId: exp.id, detalle: `${ent.nombre} radicó la información del expediente ${exp.id} (${exp.radicado.numero}).` });
+        if (!av.registro) st.crearAlerta({ tipo: "INFO_INCOMPLETA", expedienteId: exp.id, detalle: "La entidad radicó sin registrar al representante legal ni al responsable de la información." });
+        if (!av.soportes) {
+          const docs = st.lotesDe(exp.id).filter((l) => l.estado !== "DUPLICADO");
+          const faltan = OBLIGATORIOS.filter((t) => !docs.some((d) => d.tipo === t)).map((t) => S21.cat.TIPOS_DOCUMENTO[t].txt);
+          st.crearAlerta({ tipo: "SOPORTE_PENDIENTE", expedienteId: exp.id, detalle: `La entidad radicó sin: ${faltan.join(", ")}.` });
+        }
         if (new Date(U.ahora()) > new Date(exp.fechaLimite)) {
           st.crearAlerta({ tipo: "FUERA_DE_PLAZO", expedienteId: exp.id, detalle: `La entidad radicó después del plazo (${U.fecha(exp.fechaLimite)}).` });
         }

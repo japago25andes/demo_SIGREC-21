@@ -98,13 +98,18 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 
 /* Zona de carga de archivos */
 .zona-carga {
+  display: block; position: relative;
   border: 2px dashed var(--borde-fuerte); border-radius: var(--r-lg);
   padding: 1.5rem; text-align: center; background: var(--superficie-2);
   cursor: pointer; transition: border-color 0.15s, background 0.15s;
 }
 .zona-carga:hover, .zona-carga.sobre { border-color: var(--esap-azul); background: var(--esap-azul-claro); }
-.zona-carga b { color: var(--esap-navy); }
-.zona-carga input { display: none; }
+.zona-carga:focus-within { outline: 3px solid #f7b500; outline-offset: 2px; }
+.zona-carga .icono-carga { display: block; font-size: 1.6rem; line-height: 1.2; color: var(--esap-azul); }
+.zona-carga b { display: block; color: var(--esap-navy); }
+.zona-carga .ayuda-carga { display: block; margin-top: 0.15rem; }
+/* Oculto a la vista, pero alcanzable con el teclado */
+.zona-carga input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
 
 /* Pasos (portal entidad) */
 .pasos { display: flex; gap: 0; margin: 0 0 1.5rem; padding: 0; list-style: none; counter-reset: paso; flex-wrap: wrap; }

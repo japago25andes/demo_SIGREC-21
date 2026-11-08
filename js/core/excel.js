@@ -224,9 +224,13 @@ S21.excel = (function () {
   }
 
   /* Archivo diligenciado de ejemplo, coherente con los pagos ficticios de la entidad */
-  function descargarEjemplo(exp) {
+  function datosEjemplo(exp) {
     const demo = exp.id === S21.seed.DEMO.expediente;
-    const n = S21.gen.generarNomina({ semilla: demo ? S21.seed.DEMO.semilla : 4000 + Number(exp.id.slice(-4)), empleados: 32, periodos: exp.periodos });
+    return S21.gen.generarNomina({ semilla: demo ? S21.seed.DEMO.semilla : 4000 + Number(exp.id.slice(-4)), empleados: 32, periodos: exp.periodos });
+  }
+
+  function descargarEjemplo(exp) {
+    const n = datosEjemplo(exp);
     escribir(`nomina_ejemplo_${exp.id}.xlsx`, {
       Instrucciones: instrucciones(exp),
       Nomina: [ENC_NOMINA, ...n.filas.map((f) => [f.periodo, f.tipoDoc, f.documento, f.nombre, f.cargo, f.concepto, f.valor])],
@@ -247,5 +251,5 @@ S21.excel = (function () {
     escribir(nombre, { Datos: [encabezados, ...filas] }, { Datos: encabezados.map((e) => Math.max(12, String(e).length + 4)) });
   }
 
-  return { disponible, leerNomina, leerPagos, descargarPlantilla, descargarEjemplo, descargarPlantillaPagos, exportar };
+  return { disponible, leerNomina, leerPagos, descargarPlantilla, datosEjemplo, descargarEjemplo, descargarPlantillaPagos, exportar };
 })();

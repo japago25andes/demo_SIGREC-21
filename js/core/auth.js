@@ -109,7 +109,13 @@ S21.auth = (function () {
     const db = S21.store.db;
     const exp = db.expedientes.find((e) => e.credencial && e.credencial.usuario.toUpperCase() === String(usuario).trim().toUpperCase());
     if (!exp || exp.credencial.clave !== String(clave).trim()) return { ok: false, msg: "Usuario o clave temporal incorrectos." };
-    if (!exp.credencial.activa) return { ok: false, msg: "La credencial fue revocada. Comuníquese con el Grupo de Recaudo y Cartera." };
+    // La credencial de la demostración en vivo nunca se bloquea: los datos pueden llevar días en el navegador
+    const esDemo = exp.id === S21.seed.DEMO.expediente;
+    if (esDemo && new Date(exp.credencial.vence) < new Date()) {
+      exp.credencial.vence = S21.util.sumarDias(S21.util.ahora(), 13);
+      exp.fechaLimite = exp.credencial.vence;
+    }
+    if (!exp.credencial.activa && !esDemo) return { ok: false, msg: "La credencial fue revocada. Comuníquese con el Grupo de Recaudo y Cartera." };
     if (new Date(exp.credencial.vence) < new Date()) return { ok: false, msg: `La credencial venció el ${S21.util.fecha(exp.credencial.vence)}. Solicite una nueva al Grupo de Recaudo y Cartera.` };
     S21.store.guardarSesion({ tipo: "entidad", expedienteId: exp.id, usuario: exp.credencial.usuario, desde: S21.util.ahora() });
     exp.credencial.ultimoAcceso = S21.util.ahora();
