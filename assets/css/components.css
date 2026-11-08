@@ -204,9 +204,17 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--er
 .hero {
   background: linear-gradient(120deg, var(--esap-navy), var(--esap-azul));
   color: #fff; border-radius: var(--r-lg); padding: 2rem; margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 2rem;
 }
 .hero h1 { color: #fff; font-size: 1.9rem; }
-.hero p { color: rgba(255,255,255,0.9); max-width: 760px; }
+.hero p { color: rgba(255,255,255,0.9); max-width: 760px; margin-bottom: 0; }
+.hero-logo { flex: none; background: #fff; border-radius: var(--r-lg); padding: 1rem; box-shadow: var(--sombra); }
+.hero-logo img { display: block; width: 170px; height: auto; }
+@media (max-width: 640px) {
+  .hero { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
+  .hero-logo { align-self: center; }
+  .hero-logo img { width: 150px; }
+}
 .entrada {
   display: flex; flex-direction: column; gap: 0.6rem; height: 100%;
 }

@@ -9,10 +9,13 @@
       const expDemo = S21.store.expediente(demo.expediente);
       el.innerHTML = `
         <section class="hero">
-          <h1>SIGREC-21</h1>
-          <p><b>Sistema Integrado de Gestión de la Información del Recaudo asociado a las contribuciones de la Ley 21 de 1982.</b>
-          Componente institucional que se ubica <b>después de las alertas</b> de SIGIP, Python y Power BI: organiza el requerimiento,
-          la recepción de nóminas y soportes, la validación, el cruce, la conciliación y la trazabilidad de cada caso hasta su resultado.</p>
+          <div class="hero-logo"><img src="assets/img/logo-sigrec.png" alt="Logo de SIGREC-21: Gestión, Registro, Control"></div>
+          <div>
+            <h1>SIGREC-21</h1>
+            <p><b>Sistema Integrado de Gestión de la Información del Recaudo asociado a las contribuciones de la Ley 21 de 1982.</b>
+            Componente institucional que se ubica <b>después de las alertas</b> de SIGIP, Python y Power BI: organiza el requerimiento,
+            la recepción de nóminas y soportes, la validación, el cruce, la conciliación y la trazabilidad de cada caso hasta su resultado.</p>
+          </div>
         </section>
 
         <div class="grid grid-2 mb-3">
